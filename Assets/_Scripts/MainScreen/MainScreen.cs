@@ -1,16 +1,22 @@
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
+using Zenject;
 
-public class MainScreen : MonoBehaviour
-{
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+public class MainScreen : MonoBehaviour {
+    [Inject] DataLoaderHelper dataLoaderHelper;
+
+    [SerializeField] Image loader;
+
+    void Start() {
+        dataLoaderHelper.LoadData();
+        LoadData().Forget();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    async UniTaskVoid LoadData() {
+        loader.gameObject.SetActive(true);
+        int availableData = await dataLoaderHelper.GetItemsCount();
+        loader.gameObject.SetActive(false);
+        Debug.Log(availableData);
     }
 }
