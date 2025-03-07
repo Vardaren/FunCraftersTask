@@ -5,18 +5,25 @@ using Zenject;
 
 public class MainScreen : MonoBehaviour {
     [Inject] DataLoaderHelper dataLoaderHelper;
+    [Inject] DataLoaderDataStore dataLoaderDS;
 
     [SerializeField] Image loader;
+    [SerializeField] Item itemPrefab;
 
     void Start() {
-        dataLoaderHelper.LoadData();
-        LoadData().Forget();
+        dataLoaderHelper.SetupServer();
+        GetItemsCount().Forget();
     }
 
-    async UniTaskVoid LoadData() {
+    async UniTaskVoid GetItemsCount() {
         loader.gameObject.SetActive(true);
-        int availableData = await dataLoaderHelper.GetItemsCount();
+        dataLoaderDS.availableDataCount = await dataLoaderHelper.GetItemsCount();
         loader.gameObject.SetActive(false);
-        Debug.Log(availableData);
+    }
+
+    async UniTaskVoid GetInitialItems() {
+        loader.gameObject.SetActive(true);
+        dataLoaderDS.items = await dataLoaderHelper.RequestData();
+        loader.gameObject.SetActive(false);
     }
 }
