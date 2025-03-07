@@ -515,6 +515,7 @@ MonoBehaviour:
   category: {fileID: 7431803626512732419}
   index: {fileID: 1798425897169071189}
   descritipion: {fileID: 4148423072851257423}
+  categoryAssets: {fileID: 11400000, guid: 4b09893af00370e4ca0f2731c262bd85, type: 2}
 --- !u!1 &8904680776578982584
 GameObject:
   m_ObjectHideFlags: 0

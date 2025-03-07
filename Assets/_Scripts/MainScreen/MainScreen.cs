@@ -1,4 +1,6 @@
 using Cysharp.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -7,15 +9,29 @@ public class MainScreen : MonoBehaviour {
     [Inject] DataLoaderHelper dataLoaderHelper;
     [Inject] DataLoaderDataStore dataLoaderDS;
 
+    [SerializeField] Transform itemsContainer;
     [SerializeField] Image loader;
     [SerializeField] Item itemPrefab;
 
-    void Start() {
+    async void Start() {
         dataLoaderHelper.SetupServer();
-        GetItemsCount().Forget();
+        dataLoaderHelper.itemsLoaded += HadleItemsLoaded;
+        await GetItemsCount();
+        GetInitialItems().Forget();
     }
 
-    async UniTaskVoid GetItemsCount() {
+    void HadleItemsLoaded(IList<DataItem> list) {
+        ShowItems(list);
+    }
+
+    void ShowItems(IList<DataItem> list) {
+        foreach (DataItem item in list) {
+            var spawnedItem = Instantiate(itemPrefab, itemsContainer);
+            spawnedItem.Setup(item);
+        }
+    }
+
+    async UniTask GetItemsCount() {
         loader.gameObject.SetActive(true);
         dataLoaderDS.availableDataCount = await dataLoaderHelper.GetItemsCount();
         loader.gameObject.SetActive(false);
@@ -23,7 +39,7 @@ public class MainScreen : MonoBehaviour {
 
     async UniTaskVoid GetInitialItems() {
         loader.gameObject.SetActive(true);
-        dataLoaderDS.items = await dataLoaderHelper.RequestData();
+        await dataLoaderHelper.RequestData();
         loader.gameObject.SetActive(false);
     }
 }
