@@ -1,5 +1,6 @@
 using FunCraftersTask.Data;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Zenject;
 
@@ -10,6 +11,7 @@ namespace FunCraftersTask.UI {
 
         [SerializeField] Transform itemsContainer;
         [SerializeField] Item itemPrefab;
+        [SerializeField] CategoryAssets categoryAssets;
 
         List<Item> spawnedItems = new();
 
@@ -24,19 +26,35 @@ namespace FunCraftersTask.UI {
         void ShowItems(IList<DataItem> list) {
             var i = 0;
             for (; i < list.Count; i++) {
-                var item = list[i];
-                var index = dataLoaderDS.indexToLoad + i + 1;
-                if (spawnedItems.Count > i) {
-                    spawnedItems[i].Setup(item, index);
-                } else {
-                    var spawnedItem = Instantiate(itemPrefab, itemsContainer);
-                    spawnedItem.Setup(item, index);
-                    spawnedItems.Add(spawnedItem);
-                }
+                var uiItem = UIItem();
+
+                if (spawnedItems.Count > i)
+                    spawnedItems[i].Setup(uiItem);
+                else
+                    SpawnNewItem(uiItem);
+
             }
 
             for (; i < spawnedItems.Count; i++)
-                spawnedItems[i].gameObject.SetActive(false);
+                spawnedItems[i].Hide();
+
+
+            UIItemData UIItem() {
+                var index = dataLoaderDS.indexToLoad + i + 1;
+                var sprite = categoryAssets.categorySprites.FirstOrDefault(x => x.categoryType == list[i].Category).sprite;
+                var uiItem = new UIItemData(index.ToString(), list[i], sprite);
+                return uiItem;
+            }
+
+            void SpawnNewItem(UIItemData data) {
+                var spawnedItem = Instantiate(itemPrefab, itemsContainer);
+                spawnedItem.Setup(data);
+                spawnedItems.Add(spawnedItem);
+            }
+        }
+
+        void OnDestroy() {
+            dataLoaderHelper.itemsLoaded -= HandleItemsLoaded;
         }
     }
 }

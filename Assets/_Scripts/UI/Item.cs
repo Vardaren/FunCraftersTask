@@ -9,14 +9,17 @@ namespace FunCraftersTask.UI {
         [SerializeField] Image category;
         [SerializeField] TMP_Text indexText;
         [SerializeField] TMP_Text descritipionText;
-        [SerializeField] CategoryAssets categoryAssets;
 
-        public void Setup(DataItem item, int index) {
-            gameObject.SetActive(true);
-            glow.SetActive(item.Special);
-            category.sprite = categoryAssets.categorySprites.FirstOrDefault(x => x.categoryType == item.Category).sprite;
-            indexText.text = index.ToString();
-            descritipionText.text = item.Description;
+        void Show() => gameObject.SetActive(true);
+
+        public void Setup(UIItemData item) {
+            Show();
+            glow.SetActive(item.special);
+            category.sprite = item.categoryIcon;
+            indexText.text = item.index;
+            descritipionText.text = item.description;
         }
+
+        public void Hide() => gameObject.SetActive(false);
     }
 }

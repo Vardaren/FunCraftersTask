@@ -33,5 +33,9 @@ namespace FunCraftersTask.UI {
                 dataLoader.RequestData().Forget();
             }
         }
+
+        void OnDestroy() {
+            dataLoaderHelper.itemsLoaded -= UpdateButtonInteractivity;
+        }
     }
 }
