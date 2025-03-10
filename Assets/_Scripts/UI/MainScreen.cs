@@ -14,10 +14,10 @@ namespace FunCraftersTask.UI {
         List<Item> spawnedItems = new();
 
         void Start() {
-            dataLoaderHelper.itemsLoaded += HadleItemsLoaded;
+            dataLoaderHelper.itemsLoaded += HandleItemsLoaded;
         }
 
-        void HadleItemsLoaded(IList<DataItem> list) {
+        void HandleItemsLoaded(IList<DataItem> list) {
             ShowItems(list);
         }
 
@@ -25,7 +25,7 @@ namespace FunCraftersTask.UI {
             var i = 0;
             for (; i < list.Count; i++) {
                 var item = list[i];
-                var index = dataLoaderDS.indexToLoad + i;
+                var index = dataLoaderDS.indexToLoad + i + 1;
                 if (spawnedItems.Count > i) {
                     spawnedItems[i].Setup(item, index);
                 } else {
