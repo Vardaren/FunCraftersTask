@@ -6,13 +6,15 @@ using UnityEngine.UI;
 public class Item : MonoBehaviour {
     [SerializeField] GameObject glow;
     [SerializeField] Image category;
-    [SerializeField] TMP_Text index;
-    [SerializeField] TMP_Text descritipion;
+    [SerializeField] TMP_Text indexText;
+    [SerializeField] TMP_Text descritipionText;
     [SerializeField] CategoryAssets categoryAssets;
 
-    public void Setup(DataItem item) {
+    public void Setup(DataItem item, int index) {
+        gameObject.SetActive(true);
         glow.SetActive(item.Special);
         category.sprite = categoryAssets.categorySprites.FirstOrDefault(x => x.categoryType == item.Category).sprite;
-        descritipion.text = item.Description;
+        indexText.text = index.ToString();
+        descritipionText.text = item.Description;
     }
 }

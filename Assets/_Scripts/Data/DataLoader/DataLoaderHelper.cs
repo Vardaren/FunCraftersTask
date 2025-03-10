@@ -21,6 +21,8 @@ public class DataLoaderHelper {
     public async UniTask<int> GetItemsCount() => await dataServerMock.DataAvailable(cancellationTokenSource.Token);
 
     public async UniTask RequestData() {
-        itemsLoaded?.Invoke(await dataServerMock.RequestData(dataLoaderDS.indexToLoad, dataLoaderDS.ITEMS_TO_SHOW, cancellationTokenSource.Token));
+        var itemsLeft = dataLoaderDS.availableDataCount - dataLoaderDS.indexToLoad;
+        var itemsToLoad = itemsLeft < dataLoaderDS.ITEMS_TO_SHOW ? itemsLeft : dataLoaderDS.ITEMS_TO_SHOW;
+        itemsLoaded?.Invoke(await dataServerMock.RequestData(dataLoaderDS.indexToLoad, itemsToLoad, cancellationTokenSource.Token));
     }
 }
