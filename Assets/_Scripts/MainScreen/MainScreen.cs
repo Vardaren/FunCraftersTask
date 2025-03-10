@@ -13,6 +13,8 @@ public class MainScreen : MonoBehaviour {
     [SerializeField] Image loader;
     [SerializeField] Item itemPrefab;
 
+    List<Item> spawnedItems = new();
+
     async void Start() {
         dataLoaderHelper.SetupServer();
         dataLoaderHelper.itemsLoaded += HadleItemsLoaded;
@@ -25,12 +27,22 @@ public class MainScreen : MonoBehaviour {
     }
 
     void ShowItems(IList<DataItem> list) {
-        foreach (DataItem item in list) {
-            var spawnedItem = Instantiate(itemPrefab, itemsContainer);
-            spawnedItem.Setup(item);
+        var i = 0;
+        for (; i < list.Count; i++) {
+            var item = list[i];
+            var index = dataLoaderDS.indexToLoad + i;
+            if (spawnedItems.Count > i) {
+                spawnedItems[i].Setup(item, index);
+            } else {
+                var spawnedItem = Instantiate(itemPrefab, itemsContainer);
+                spawnedItem.Setup(item, index);
+                spawnedItems.Add(spawnedItem);
+            }
         }
-    }
 
+        for (; i < spawnedItems.Count; i++)
+            spawnedItems[i].gameObject.SetActive(false);
+    }
     async UniTask GetItemsCount() {
         loader.gameObject.SetActive(true);
         dataLoaderDS.availableDataCount = await dataLoaderHelper.GetItemsCount();
