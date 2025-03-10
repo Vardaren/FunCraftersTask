@@ -2,16 +2,16 @@ using UnityEngine;
 
 namespace FunCraftersTask.UI {
     public class UIItemData {
-        public string index;
-        public bool special;
-        public Sprite categoryIcon;
-        public string description;
+        public string Index { get; }
+        public bool Special { get; }
+        public Sprite CategoryIcon { get; }
+        public string Description { get; }
 
         public UIItemData(string index, DataItem dataItem, Sprite categoryIcon) {
-            this.index = index;
-            this.special = dataItem.Special;
-            this.categoryIcon = categoryIcon;
-            this.description = dataItem.Description;
+            Index = index;
+            Special = dataItem.Special;
+            CategoryIcon = categoryIcon;
+            Description = dataItem.Description;
         }
     }
 }

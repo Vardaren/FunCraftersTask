@@ -42,8 +42,7 @@ namespace FunCraftersTask.UI {
             UIItemData UIItem() {
                 var index = dataLoaderDS.indexToLoad + i + 1;
                 var sprite = categoryAssets.categorySprites.FirstOrDefault(x => x.categoryType == list[i].Category).sprite;
-                var uiItem = new UIItemData(index.ToString(), list[i], sprite);
-                return uiItem;
+                return new UIItemData(index.ToString(), list[i], sprite);
             }
 
             void SpawnNewItem(UIItemData data) {

@@ -14,10 +14,10 @@ namespace FunCraftersTask.UI {
 
         public void Setup(UIItemData item) {
             Show();
-            glow.SetActive(item.special);
-            category.sprite = item.categoryIcon;
-            indexText.text = item.index;
-            descritipionText.text = item.description;
+            glow.SetActive(item.Special);
+            category.sprite = item.CategoryIcon;
+            indexText.text = item.Index;
+            descritipionText.text = item.Description;
         }
 
         public void Hide() => gameObject.SetActive(false);
