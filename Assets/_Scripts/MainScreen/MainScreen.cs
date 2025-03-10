@@ -1,8 +1,5 @@
-using Cysharp.Threading.Tasks;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using Zenject;
 
 public class MainScreen : MonoBehaviour {
@@ -10,16 +7,12 @@ public class MainScreen : MonoBehaviour {
     [Inject] DataLoaderDataStore dataLoaderDS;
 
     [SerializeField] Transform itemsContainer;
-    [SerializeField] Image loader;
     [SerializeField] Item itemPrefab;
 
     List<Item> spawnedItems = new();
 
-    async void Start() {
-        dataLoaderHelper.SetupServer();
+    void Start() {
         dataLoaderHelper.itemsLoaded += HadleItemsLoaded;
-        await GetItemsCount();
-        GetInitialItems().Forget();
     }
 
     void HadleItemsLoaded(IList<DataItem> list) {
@@ -42,16 +35,5 @@ public class MainScreen : MonoBehaviour {
 
         for (; i < spawnedItems.Count; i++)
             spawnedItems[i].gameObject.SetActive(false);
-    }
-    async UniTask GetItemsCount() {
-        loader.gameObject.SetActive(true);
-        dataLoaderDS.availableDataCount = await dataLoaderHelper.GetItemsCount();
-        loader.gameObject.SetActive(false);
-    }
-
-    async UniTaskVoid GetInitialItems() {
-        loader.gameObject.SetActive(true);
-        await dataLoaderHelper.RequestData();
-        loader.gameObject.SetActive(false);
     }
 }

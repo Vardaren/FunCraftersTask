@@ -1,11 +1,9 @@
-using Cysharp.Threading.Tasks;
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
 public class MainScreenButtons : MonoBehaviour {
-    [Inject] DataLoaderHelper dataLoaderHelper;
+    [Inject] DataLoader dataLoader;
     [Inject] DataLoaderDataStore dataLoaderDS;
 
     [SerializeField] Button previousButton;
@@ -19,7 +17,7 @@ public class MainScreenButtons : MonoBehaviour {
         var previousIndex = dataLoaderDS.indexToLoad - dataLoaderDS.ITEMS_TO_SHOW;
         if (previousIndex >= 0) {
             dataLoaderDS.indexToLoad = previousIndex;
-            dataLoaderHelper.RequestData().Forget();
+            dataLoader.RequestData().Forget();
         }
     }
 
@@ -27,7 +25,7 @@ public class MainScreenButtons : MonoBehaviour {
         var nextIndex = dataLoaderDS.indexToLoad + dataLoaderDS.ITEMS_TO_SHOW;
         if (nextIndex < dataLoaderDS.availableDataCount) {
             dataLoaderDS.indexToLoad = nextIndex;
-            dataLoaderHelper.RequestData().Forget();
+            dataLoader.RequestData().Forget();
         }
     }
 }

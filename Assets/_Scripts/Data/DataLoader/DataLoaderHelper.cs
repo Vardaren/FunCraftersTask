@@ -25,4 +25,9 @@ public class DataLoaderHelper {
         var itemsToLoad = itemsLeft < dataLoaderDS.ITEMS_TO_SHOW ? itemsLeft : dataLoaderDS.ITEMS_TO_SHOW;
         itemsLoaded?.Invoke(await dataServerMock.RequestData(dataLoaderDS.indexToLoad, itemsToLoad, cancellationTokenSource.Token));
     }
+
+    public void CancelAndDispose() {
+        cancellationTokenSource?.Cancel();
+        cancellationTokenSource?.Dispose();
+    }
 }
