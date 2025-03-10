@@ -1,4 +1,4 @@
-using UnityEngine;
+using FunCraftersTask.Data;
 using Zenject;
 
 public class DataStoresInstaller : MonoInstaller {

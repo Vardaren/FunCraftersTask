@@ -1,3 +1,4 @@
+using FunCraftersTask.Data;
 using UnityEngine;
 using Zenject;
 
